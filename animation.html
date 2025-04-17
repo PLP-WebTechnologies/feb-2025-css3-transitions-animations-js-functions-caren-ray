@@ -1,0 +1,104 @@
+<!-- Create a CSS animation. Store data in localStorage. Apply JavaScript to trigger animations. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Theme Switcher</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      transition: background-color 0.5s ease, color 0.5s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .light-mode {
+      background-color: #f0f0f0;
+      color: #222;
+    }
+
+    .dark-mode {
+      background-color: #1c1c1c;
+      color: #eee;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(-10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    button {
+      padding: 12px 25px;
+      border: none;
+      font-size: 16px;
+      border-radius: 8px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s ease, background-color 0.4s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .bounce {
+      animation: bounce 0.3s;
+    }
+
+    @keyframes bounce {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to My Animated Page</h1>
+  <button id="toggleTheme">Toggle Theme</button>
+
+  <script>
+    const toggleBtn = document.getElementById('toggleTheme');
+    const body = document.body;
+
+    // Load stored theme on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      applyTheme(savedTheme);
+    });
+
+    // Function to apply theme and save it
+    function applyTheme(theme) {
+      if (theme === 'dark') {
+        body.classList.remove('light-mode');
+        body.classList.add('dark-mode');
+      } else {
+        body.classList.remove('dark-mode');
+        body.classList.add('light-mode');
+      }
+      localStorage.setItem('theme', theme);
+    }
+
+    // Button click event
+    toggleBtn.addEventListener('click', () => {
+      const currentTheme = body.classList.contains('dark-mode') ? 'dark' : 'light';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      applyTheme(newTheme);
+
+      // Trigger bounce animation
+      toggleBtn.classList.add('bounce');
+      setTimeout(() => toggleBtn.classList.remove('bounce'), 300);
+    });
+  </script>
+</body>
+</html>
